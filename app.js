@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
 const bodyParser = require("body-parser");
 const authRouter = require("./routes/auth");
 const userRouter = require("./routes/user");
@@ -8,6 +9,8 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(express.static(path.join(__dirname, "public" , "uploads")));
 
 app.use((err, req, res, next) => {
   return res.status(500).json({
