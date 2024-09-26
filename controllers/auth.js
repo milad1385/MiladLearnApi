@@ -1,6 +1,7 @@
 const registerValidator = require("../validators/register");
 const loginValidator = require("../validators/login");
 const UserModel = require("../models/user");
+const BanUserModel = require("../models/ban");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -17,6 +18,14 @@ exports.register = async (req, res, next) => {
     const isUserExist = await UserModel.findOne({
       $or: [{ username, email, phone }],
     });
+
+    const isUserBan = await BanUserModel.findOne({ phone });
+
+    if (isUserBan) {
+      return res.status(410).json({
+        message: "This phone number is already baned !!!",
+      });
+    }
 
     if (isUserExist) {
       return res.status(409).json({
@@ -62,6 +71,14 @@ exports.login = async (req, res, next) => {
 
     if (!user) {
       return res.status(404).json({ message: "User not found !!!" });
+    }
+
+    const isUserBan = await BanUserModel.findOne({ phone : user.phone });
+
+    if (isUserBan) {
+      return res.status(410).json({
+        message: "This phone number is already baned !!!",
+      });
     }
 
     const isValidPassword = await bcrypt.compare(password, user.password);

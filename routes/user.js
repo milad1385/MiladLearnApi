@@ -8,10 +8,8 @@ router.use(authMiddleware, isAdminMiddleware);
 
 router.route("/").get(userController.getAll);
 
-router
-  .route("/:id")
-  .delete(userController.delete)
-  .put(userController.update)
-  .post(userController.addUserToBanList);
+router.route("/:id").delete(userController.delete).put(userController.update);
+
+router.route("/:id/ban").post(userController.addUserToBanList);
 
 module.exports = router;

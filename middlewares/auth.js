@@ -21,7 +21,6 @@ module.exports = async (req, res, next) => {
     }
 
     const user = await UserModel.findOne({ _id: payload.id });
-    console.log(user);
 
     if (!user) {
       return res.status(404).json({ message: "user is not found !!!" });
