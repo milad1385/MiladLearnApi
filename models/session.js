@@ -33,6 +33,6 @@ const schema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const model = mongoose.model("User", schema);
+const model = mongoose.model("Session", schema);
 
 module.exports = model;

@@ -4,13 +4,15 @@ const path = require("path");
 const bodyParser = require("body-parser");
 const authRouter = require("./routes/auth");
 const userRouter = require("./routes/user");
+const coursesRouter = require("./routes/course");
+const categoryRouter = require("./routes/category");
 const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use(express.static(path.join(__dirname, "public" , "uploads")));
+app.use(express.static(path.join(__dirname, "public", "uploads")));
 
 app.use((err, req, res, next) => {
   return res.status(500).json({
@@ -20,6 +22,8 @@ app.use((err, req, res, next) => {
 });
 
 app.use("/auth", authRouter);
-app.use("/users", userRouter);
+app.use("/user", userRouter);
+app.use("/category", categoryRouter);
+app.use("/course", coursesRouter);
 
 module.exports = app;

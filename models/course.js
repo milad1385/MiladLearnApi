@@ -33,6 +33,7 @@ const schema = new mongoose.Schema(
     status: {
       type: String,
       required: true,
+      enum: ["presell", "teaching", "finish"],
     },
     support: {
       type: String,
@@ -46,6 +47,6 @@ const schema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const model = mongoose.model("User", schema);
+const model = mongoose.model("Course", schema);
 
 module.exports = model;
