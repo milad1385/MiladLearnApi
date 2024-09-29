@@ -79,6 +79,9 @@ exports.createSession = async (req, res, next) => {
 
 exports.getAllSessions = async (req, res, next) => {
   try {
+    const sessions = await SessionModel.find({});
+
+    res.json(sessions);
   } catch (error) {
     next();
   }
