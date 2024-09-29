@@ -108,6 +108,12 @@ exports.getSessionInfo = async (req, res, next) => {
 
 exports.getAllCourses = async (req, res, next) => {
   try {
+    const courses = await CourseModel.find({}).populate(
+      "creator category",
+      "title name"
+    );
+
+    return res.json(courses);
   } catch (error) {
     next();
   }

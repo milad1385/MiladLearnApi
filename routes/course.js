@@ -15,7 +15,8 @@ router
     isAdminMiddleware,
     multer.single("cover"),
     courseController.create
-  );
+  )
+  .get(courseController.getAllCourses);
 
 router
   .route("/:id/session")
