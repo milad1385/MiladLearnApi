@@ -88,7 +88,19 @@ exports.getAllSessions = async (req, res, next) => {
 };
 
 exports.getSessionInfo = async (req, res, next) => {
+  console.log(req.params);
+
   try {
+    const { sessionId } = req.params;
+
+    if (!isValidObjectId(sessionId)) {
+      return res.status(422).json({ message: "please send valid id" });
+    }
+
+    const session = await SessionModel.findOne({ _id: sessionId });
+    const sessions = await SessionModel.find({ course: session.course });
+
+    return res.json({ sessionInfo: session, sessions });
   } catch (error) {
     next();
   }

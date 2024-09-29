@@ -30,4 +30,8 @@ router
   .route("/sessions")
   .get(authMiddleware, isAdminMiddleware, courseController.getAllSessions);
 
+router
+  .route("/session/:sessionId")
+  .get(authMiddleware, courseController.getSessionInfo);
+
 module.exports = router;
