@@ -54,9 +54,9 @@ exports.createSession = async (req, res, next) => {
 
     const { title, href, time, free } = req.body;
 
-    const { courseId } = req.params;
+    const { id } = req.params;
 
-    if (!isValidObjectId(courseId)) {
+    if (!isValidObjectId(id)) {
       return res.status(422).json({ message: "please send valid course id" });
     }
 
@@ -66,6 +66,7 @@ exports.createSession = async (req, res, next) => {
       time,
       free,
       course: courseId,
+      video: req.file.filename,
     });
 
     return res
