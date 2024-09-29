@@ -10,6 +10,11 @@ const multer = multerStorage("public/uploads");
 
 router
   .route("/")
-  .post(authMiddleware, isAdminMiddleware, courseController.create);
+  .post(
+    authMiddleware,
+    isAdminMiddleware,
+    multer.single("cover"),
+    courseController.create
+  );
 
 module.exports = router;

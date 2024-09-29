@@ -29,6 +29,7 @@ const schema = new mongoose.Schema(
     creator: {
       type: mongoose.Types.ObjectId,
       ref: "User",
+      required: true,
     },
     status: {
       type: String,

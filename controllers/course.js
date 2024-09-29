@@ -5,8 +5,6 @@ const courseValidator = require("../validators/course");
 
 exports.create = async (req, res, next) => {
   try {
-    console.log(req.body);
-    
     const isValidBody = courseValidator(req.body);
     if (isValidBody !== true) {
       return res.status(422).json(isValidBody);
@@ -27,7 +25,7 @@ exports.create = async (req, res, next) => {
       title,
       description,
       href,
-      cover : req.file.filename,
+      cover: req.file.filename,
       price,
       discount,
       creator: req.user._id,
@@ -47,6 +45,7 @@ exports.create = async (req, res, next) => {
 
 exports.createSession = async (req, res, next) => {
   try {
+    
   } catch (error) {
     next();
   }

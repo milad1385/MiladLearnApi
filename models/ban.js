@@ -5,13 +5,11 @@ const schema = new mongoose.Schema(
     user: {
       type: mongoose.Types.ObjectId,
       ref: "User",
-      unique: true,
       required: true,
     },
     phone: {
       type: String,
       required: true,
-      unique: true,
     },
   },
   { timestamps: true }
