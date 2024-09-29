@@ -157,6 +157,27 @@ exports.deleteCourse = async (req, res, next) => {
 
 exports.updateCourse = async (req, res, next) => {
   try {
+    const { id } = req.params;
+
+    if (!isValidObjectId(id)) {
+      return res.status(422).json({ message: "please send valid id" });
+    }
+  } catch (error) {
+    next();
+  }
+};
+
+exports.getOne = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    if (!isValidObjectId(id)) {
+      return res.status(422).json({ message: "please send valid id" });
+    }
+
+    const course = await CourseModel.findOne({ _id: id }).lean();
+
+    return res.json(course);
   } catch (error) {
     next();
   }

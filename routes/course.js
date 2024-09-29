@@ -42,5 +42,6 @@ router
 router
   .route("/:id")
   .delete(authMiddleware, isAdminMiddleware, courseController.deleteCourse)
-  .put(authMiddleware, isAdminMiddleware, courseController.updateCourse);
+  .put(authMiddleware, isAdminMiddleware, courseController.updateCourse)
+  .get(courseController.getOne);
 module.exports = router;
