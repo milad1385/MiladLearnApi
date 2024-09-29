@@ -17,4 +17,13 @@ router
     courseController.create
   );
 
+router
+  .route("/:id/session")
+  .post(
+    authMiddleware,
+    isAdminMiddleware,
+    multer.single("video"),
+    courseController.createSession
+  );
+
 module.exports = router;

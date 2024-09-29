@@ -7,8 +7,6 @@ const schema = {
   href: { type: "string", min: 1, max: 1000 },
   time: { type: "string", min: 1, max: 100 },
   free: { type: "string", min: 1, max: 100 },
-  course: { type: "string", optional: true, min: 1, max: 100 },
-  video: { type: "string", min: 1, max: 100 },
 };
 
 const check = v.compile(schema);

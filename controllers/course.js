@@ -2,6 +2,8 @@ const CourseModel = require("../models/course");
 const CategoryModel = require("../models/category");
 const SessionModel = require("../models/session");
 const courseValidator = require("../validators/course");
+const sessionValidator = require("../validators/session");
+const { isValidObjectId } = require("mongoose");
 
 exports.create = async (req, res, next) => {
   try {
@@ -45,7 +47,30 @@ exports.create = async (req, res, next) => {
 
 exports.createSession = async (req, res, next) => {
   try {
-    
+    const isValidBody = sessionValidator(req.body);
+    if (isValidBody !== true) {
+      return res.status(422).json(isValidBody);
+    }
+
+    const { title, href, time, free } = req.body;
+
+    const { courseId } = req.params;
+
+    if (!isValidObjectId(courseId)) {
+      return res.status(422).json({ message: "please send valid course id" });
+    }
+
+    const session = await SessionModel.create({
+      title,
+      href,
+      time,
+      free,
+      course: courseId,
+    });
+
+    return res
+      .status(201)
+      .json({ message: "Session created successfully:)", session });
   } catch (error) {
     next();
   }
