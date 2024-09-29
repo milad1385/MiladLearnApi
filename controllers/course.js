@@ -88,8 +88,6 @@ exports.getAllSessions = async (req, res, next) => {
 };
 
 exports.getSessionInfo = async (req, res, next) => {
-  console.log(req.params);
-
   try {
     const { sessionId } = req.params;
 
@@ -121,6 +119,18 @@ exports.getAllCourses = async (req, res, next) => {
 
 exports.deleteSession = async (req, res, next) => {
   try {
+    const { id } = req.params;
+
+    if (!isValidObjectId(id)) {
+      return res.status(422).json({ message: "please send valid id" });
+    }
+
+    const session = await SessionModel.findOneAndDelete({ _id: id });
+    if (!session) {
+      return res.status(404).json({ message: "session is not found !!!" });
+    }
+
+    return res.json({ message: "session deleted successfully:)" });
   } catch (error) {
     next();
   }

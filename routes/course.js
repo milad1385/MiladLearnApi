@@ -35,4 +35,7 @@ router
   .route("/session/:sessionId")
   .get(authMiddleware, courseController.getSessionInfo);
 
+router
+  .route("/session/:id")
+  .delete(authMiddleware, isAdminMiddleware, courseController.deleteSession);
 module.exports = router;
