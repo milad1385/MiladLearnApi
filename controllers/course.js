@@ -138,6 +138,18 @@ exports.deleteSession = async (req, res, next) => {
 
 exports.deleteCourse = async (req, res, next) => {
   try {
+    const { id } = req.params;
+
+    if (!isValidObjectId(id)) {
+      return res.status(422).json({ message: "please send valid id" });
+    }
+
+    const course = await CourseModel.findOneAndDelete({ _id: id });
+    if (!course) {
+      return res.status(404).json({ message: "course is not found !!!" });
+    }
+
+    return res.json({ message: "course deleted successfully:)" });
   } catch (error) {
     next();
   }
