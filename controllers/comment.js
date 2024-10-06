@@ -46,18 +46,21 @@ exports.delete = async (req, res, next) => {
   }
 };
 
-exports.accept = async (req, res, next) => {
+exports.acceptOrReject = async (req, res, next) => {
   try {
-    const { id } = req.params;
-    if (!isValidObjectId(id)) {
-      return res.status(422).json({ message: "Please send valid id " });
+    const { id, status } = req.params;
+
+    if (!isValidObjectId(id) || !status) {
+      return res
+        .status(422)
+        .json({ message: "Please send valid id and status " });
     }
 
     const comment = await CommentModel.findOneAndUpdate(
       { _id: id },
       {
         $set: {
-          isAccept: 1,
+          isAccept: status === "accept" ? 1 : 0,
         },
       }
     );
@@ -66,33 +69,11 @@ exports.accept = async (req, res, next) => {
       return res.status(404).json({ message: "Comment is not found" });
     }
 
-    return res.json({ message: "Comment accepted successfully :)" });
-  } catch (error) {
-    next();
-  }
-};
-
-exports.reject = async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    if (!isValidObjectId(id)) {
-      return res.status(422).json({ message: "Please send valid id " });
-    }
-
-    const comment = await CommentModel.findOneAndUpdate(
-      { _id: id },
-      {
-        $set: {
-          isAccept: 0,
-        },
-      }
-    );
-
-    if (!comment) {
-      return res.status(404).json({ message: "Comment is not found" });
-    }
-
-    return res.json({ message: "Comment rejected successfully :)" });
+    return res.json({
+      message: `Comment ${
+        status === "accept" ? "accept" : "reject"
+      } successfully :)`,
+    });
   } catch (error) {
     next();
   }
