@@ -43,5 +43,7 @@ router
   .route("/:id")
   .delete(authMiddleware, isAdminMiddleware, courseController.deleteCourse)
   .put(authMiddleware, isAdminMiddleware, courseController.updateCourse)
-  .get(courseController.getOne);
+  .get(authMiddleware, courseController.getOne);
+
+router.route("/category/:href", courseController.getCourseByCategory);
 module.exports = router;

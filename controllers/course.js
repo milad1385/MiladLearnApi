@@ -214,3 +214,25 @@ exports.getOne = async (req, res, next) => {
     next();
   }
 };
+
+exports.getCourseByCategory = async (req, res, next) => {
+  try {
+    const { href } = req.params;
+
+    if (!href) {
+      return res.json({ message: "please send category href !!!" });
+    }
+
+    const category = await CategoryModel.findOne({ href });
+
+    const courses = await CourseModel.find({ category: category._id });
+
+    if (courses.length) {
+      return res.json(courses);
+    } else {
+      return res.json([]);
+    }
+  } catch (error) {
+    next();
+  }
+};
