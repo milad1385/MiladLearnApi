@@ -3,6 +3,8 @@ const CategoryModel = require("../models/category");
 const SessionModel = require("../models/session");
 const courseValidator = require("../validators/course");
 const sessionValidator = require("../validators/session");
+const CommentModel = require("../models/comment");
+const RegisterCourse = require("../models/registerCourse");
 const { isValidObjectId } = require("mongoose");
 
 exports.create = async (req, res, next) => {
@@ -169,15 +171,45 @@ exports.updateCourse = async (req, res, next) => {
 
 exports.getOne = async (req, res, next) => {
   try {
-    const { id } = req.params;
+    const { href } = req.params;
 
-    if (!isValidObjectId(id)) {
-      return res.status(422).json({ message: "please send valid id" });
+    if (!href) {
+      return res.json({ message: "please send course href !!!" });
     }
 
-    const course = await CourseModel.findOne({ _id: id }).lean();
+    const course = await CourseModel.findOne({ href }).lean();
+    const sessions = await SessionModel.find({ course: course._id });
+    const comments = await CommentModel.find({});
+    const mainComments = comments.filter((comment) => !comment.isAnswer);
+    const replyComments = comments.filter((comment) => comment.isAnswer);
 
-    return res.json(course);
+    const isUserRegister = !!(await RegisterCourse.findOne({
+      user: req.user._id,
+      course: course._id,
+    }));
+
+    const usersRegisterCount = await RegisterCourse.find({
+      course: course._id,
+    });
+
+    let allComments = mainComments.map((comment) => {
+      const matchedComments = replyComments.filter(
+        (reply) => reply.mainCommentId === comment._id
+      );
+
+      return {
+        ...comment,
+        reply: matchedComments,
+      };
+    });
+
+    return res.json({
+      course,
+      comments: allComments,
+      sessions,
+      isUserRegister,
+      usersRegisterCount,
+    });
   } catch (error) {
     next();
   }

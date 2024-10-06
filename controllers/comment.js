@@ -10,10 +10,8 @@ exports.create = async (req, res, next) => {
       return res.status(422).json({ message: "Please fill all of the filed" });
     }
 
-    const course = await CourseModel.findOne({ _id: courseId }).lean();
-
     const comment = await CommentModel.create({
-      course: course._id,
+      course: courseId,
       user: req.user._id,
       body,
       score,
