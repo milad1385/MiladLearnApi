@@ -41,7 +41,8 @@ const schema = new mongoose.Schema(
       required: true,
     },
     category: {
-      type: String,
+      type: mongoose.Types.ObjectId,
+      ref: "Category",
       required: true,
     },
   },

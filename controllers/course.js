@@ -177,29 +177,41 @@ exports.getOne = async (req, res, next) => {
       return res.json({ message: "please send course href !!!" });
     }
 
-    const course = await CourseModel.findOne({ href }).lean();
-    const sessions = await SessionModel.find({ course: course._id });
-    const comments = await CommentModel.find({});
+    const course = await CourseModel.findOne({ href })
+      .populate("category creator", "title href name -_id")
+      .lean();
+
+    const sessions = await SessionModel.find({ course: course._id }).lean();
+
+    const comments = await CommentModel.find({
+      isAccept: 1,
+      course: course._id,
+    })
+      .populate("user", "name username -_id")
+      .lean();
+
     const mainComments = comments.filter((comment) => !comment.isAnswer);
     const replyComments = comments.filter((comment) => comment.isAnswer);
+    console.log(replyComments);
+    
 
     const isUserRegister = !!(await RegisterCourse.findOne({
       user: req.user._id,
       course: course._id,
     }));
 
-    const usersRegisterCount = await RegisterCourse.find({
+    const usersRegisterCount = await RegisterCourse.countDocuments({
       course: course._id,
     });
 
     let allComments = mainComments.map((comment) => {
       const matchedComments = replyComments.filter(
-        (reply) => reply.mainCommentId === comment._id
+        (reply) => String(reply.mainCommentId) === String(comment._id)
       );
 
       return {
         ...comment,
-        reply: matchedComments,
+        replies: matchedComments,
       };
     });
 
@@ -232,6 +244,26 @@ exports.getCourseByCategory = async (req, res, next) => {
     } else {
       return res.json([]);
     }
+  } catch (error) {
+    next();
+  }
+};
+
+exports.registerUserInCourse = async (req, res, next) => {
+  try {
+    const { courseId, price } = req.body;
+
+    if (!courseId || !price) {
+      return res.status(422).json({ message: "PLease send valid property" });
+    }
+
+    const registerUser = await RegisterCourse.create({
+      course: courseId,
+      user: req.user._id,
+      price,
+    });
+
+    return res.json(201).json({ message: "user resgister successfully :)" });
   } catch (error) {
     next();
   }

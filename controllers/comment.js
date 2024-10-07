@@ -96,11 +96,20 @@ exports.answer = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    if (!isValidObjectId(id)) {
+    const { body } = req.body;
+
+    if (!isValidObjectId(id) || !body) {
       return res.status(422).json({ message: "Please send valid object id" });
     }
 
-    const mainComment = await CommentModel.findOne({ _id: id });
+    const mainComment = await CommentModel.findOneAndUpdate(
+      { _id: id },
+      {
+        $set: {
+          isAccept: 1,
+        },
+      }
+    );
 
     const comment = await CommentModel.create({
       course: mainComment.course,
@@ -108,6 +117,7 @@ exports.answer = async (req, res, next) => {
       body,
       isAnswer: 1,
       isAccept: 1,
+      mainCommentId: mainComment._id,
     });
 
     return res

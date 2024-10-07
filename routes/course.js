@@ -42,8 +42,13 @@ router
 router
   .route("/:id")
   .delete(authMiddleware, isAdminMiddleware, courseController.deleteCourse)
-  .put(authMiddleware, isAdminMiddleware, courseController.updateCourse)
-  .get(authMiddleware, courseController.getOne);
+  .put(authMiddleware, isAdminMiddleware, courseController.updateCourse);
 
 router.route("/category/:href", courseController.getCourseByCategory);
+
+router
+  .route("/register")
+  .post(authMiddleware, courseController.registerUserInCourse);
+
+router.get("/:href", authMiddleware, courseController.getOne);
 module.exports = router;
