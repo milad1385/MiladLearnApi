@@ -53,4 +53,7 @@ router
 router.get("/:href", authMiddleware, courseController.getOne);
 
 router.get("/:href/related", courseController.getRelatedCourses);
+
+router.get("/popular", courseController.getPopularCourses);
+router.get("/recent", courseController.getRecenetCourses);
 module.exports = router;

@@ -286,9 +286,33 @@ exports.getRelatedCourses = async (req, res, next) => {
     const relatedCourses = await CourseModel.find({
       category: course.category,
       _id: { $ne: course._id },
-    }).populate("creator category" , "name username title -_id");
+    }).populate("creator category", "name username title -_id");
 
     return res.json(relatedCourses);
+  } catch (error) {
+    next();
+  }
+};
+
+exports.getPopularCourses = async (req, res, next) => {
+  try {
+    const courses = await CourseModel.find({})
+      .populate("creator category", "title name")
+      .sort({ score: 1 });
+
+    return res.json(courses);
+  } catch (error) {
+    next();
+  }
+};
+
+exports.getRecenetCourses = async (req, res, next) => {
+  try {
+    const courses = await CourseModel.find({})
+      .populate("creator category", "title name")
+      .sort({ createdAt: 1 });
+
+    return res.json(courses);
   } catch (error) {
     next();
   }
