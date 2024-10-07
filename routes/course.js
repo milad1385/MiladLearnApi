@@ -51,4 +51,6 @@ router
   .post(authMiddleware, courseController.registerUserInCourse);
 
 router.get("/:href", authMiddleware, courseController.getOne);
+
+router.get("/:href/related", courseController.getRelatedCourses);
 module.exports = router;

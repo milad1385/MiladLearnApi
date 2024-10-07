@@ -193,7 +193,6 @@ exports.getOne = async (req, res, next) => {
     const mainComments = comments.filter((comment) => !comment.isAnswer);
     const replyComments = comments.filter((comment) => comment.isAnswer);
     console.log(replyComments);
-    
 
     const isUserRegister = !!(await RegisterCourse.findOne({
       user: req.user._id,
@@ -264,6 +263,32 @@ exports.registerUserInCourse = async (req, res, next) => {
     });
 
     return res.json(201).json({ message: "user resgister successfully :)" });
+  } catch (error) {
+    next();
+  }
+};
+
+exports.getRelatedCourses = async (req, res, next) => {
+  try {
+    const { href } = req.params;
+    console.log(href);
+
+    if (!href) {
+      return res.status(422).json({ msg: "Please send valid course href" });
+    }
+
+    const course = await CourseModel.findOne({ href }).lean();
+
+    if (!course) {
+      return res.status(404).json({ message: "course not found :(" });
+    }
+
+    const relatedCourses = await CourseModel.find({
+      category: course.category,
+      _id: { $ne: course._id },
+    }).populate("creator category" , "name username title -_id");
+
+    return res.json(relatedCourses);
   } catch (error) {
     next();
   }
