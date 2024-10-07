@@ -44,7 +44,7 @@ router
   .delete(authMiddleware, isAdminMiddleware, courseController.deleteCourse)
   .put(authMiddleware, isAdminMiddleware, courseController.updateCourse);
 
-router.route("/category/:href", courseController.getCourseByCategory);
+router.route("/category/:href").get(courseController.getCourseByCategory);
 
 router
   .route("/register")
