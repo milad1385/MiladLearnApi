@@ -18,6 +18,10 @@ const schema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    course: {
+      type: mongoose.Types.ObjectId,
+      ref: "Course",
+    },
     creator: {
       type: mongoose.Types.ObjectId,
       ref: "User",
