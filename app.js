@@ -7,6 +7,7 @@ const userRouter = require("./routes/user");
 const coursesRouter = require("./routes/course");
 const categoryRouter = require("./routes/category");
 const commentRouter = require("./routes/comment");
+const contactRouter = require("./routes/contact");
 const app = express();
 
 app.use(cors());
@@ -26,6 +27,7 @@ app.use("/auth", authRouter);
 app.use("/user", userRouter);
 app.use("/category", categoryRouter);
 app.use("/course", coursesRouter);
-app.use("/comment" , commentRouter)
+app.use("/comment", commentRouter);
+app.use("/contact", contactRouter);
 
 module.exports = app;
