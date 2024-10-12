@@ -14,4 +14,11 @@ router
   .delete(authMiddleware, isAdminMiddleware, contactController.delete)
   .put(authMiddleware, isAdminMiddleware, contactController.update);
 
+router.post(
+  "/answer",
+  authMiddleware,
+  isAdminMiddleware,
+  contactController.answer
+);
+
 module.exports = router;

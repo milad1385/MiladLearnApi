@@ -1,4 +1,5 @@
 const { isValidObjectId } = require("mongoose");
+const nodemailer = require("nodemailer");
 const ContactModel = require("../models/contact");
 const ITEM_PER_PAGE = require("../utils/constant");
 
@@ -89,6 +90,50 @@ exports.update = async (req, res, next) => {
     }
 
     return res.json({ message: "Contact updated successfully:)" });
+  } catch (error) {
+    next();
+  }
+};
+
+exports.answer = async () => {
+  try {
+    const { email, body } = req.body;
+
+    if (!email || !body) {
+      return res.status(422).json({ message: "please fill all of the fields" });
+    }
+    const transport = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "miladsalami1385@gmail.com",
+        pass: "oeaw bnuz ptdk gemi",
+      },
+    });
+
+    const mailOptions = {
+      from: "miladsalami1385@gmail.com",
+      to: email,
+      subject: "پشتیبانی سایت",
+      text: body,
+    };
+
+    transport.sendMail(mailOptions, async (err, info) => {
+      if (err) {
+        return res.json({ message: err });
+      } else {
+        const contact = await ContactModel.findOneAndUpdate(
+          { email },
+          {
+            $set: {
+              answer: 1,
+            },
+          }
+        );
+        return res
+          .status(201)
+          .json({ message: "Email answered successfully :)", contact });
+      }
+    });
   } catch (error) {
     next();
   }
