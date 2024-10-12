@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.post("/", contactController.create);
 
-router.get("all", authMiddleware, isAdminMiddleware, contactController.getAll);
+router.get("/all", authMiddleware, isAdminMiddleware, contactController.getAll);
 
 router
   .route("/:id")

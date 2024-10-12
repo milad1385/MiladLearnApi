@@ -95,7 +95,7 @@ exports.update = async (req, res, next) => {
   }
 };
 
-exports.answer = async () => {
+exports.answer = async (req , res  , next) => {
   try {
     const { email, body } = req.body;
 
