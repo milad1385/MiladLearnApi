@@ -10,6 +10,7 @@ const commentRouter = require("./routes/comment");
 const contactRouter = require("./routes/contact");
 const notificationRouter = require("./routes/notification");
 const discountRouter = require("./routes/discount");
+const newsLetterRouter = require("./routes/newsLetter");
 const app = express();
 
 app.use(cors());
@@ -33,5 +34,6 @@ app.use("/comment", commentRouter);
 app.use("/contact", contactRouter);
 app.use("/notification", notificationRouter);
 app.use("/discount", discountRouter);
+app.use("/newsLetter", newsLetterRouter);
 
 module.exports = app;
