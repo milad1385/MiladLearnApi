@@ -12,6 +12,7 @@ const notificationRouter = require("./routes/notification");
 const discountRouter = require("./routes/discount");
 const newsLetterRouter = require("./routes/newsLetter");
 const searchRouter = require("./routes/search");
+const departmentRouter = require("./routes/department");
 const app = express();
 
 app.use(cors());
@@ -37,5 +38,6 @@ app.use("/notification", notificationRouter);
 app.use("/discount", discountRouter);
 app.use("/newsLetter", newsLetterRouter);
 app.use("/search", searchRouter);
+app.use("/department", departmentRouter);
 
 module.exports = app;
