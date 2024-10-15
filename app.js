@@ -14,6 +14,7 @@ const newsLetterRouter = require("./routes/newsLetter");
 const searchRouter = require("./routes/search");
 const departmentRouter = require("./routes/department");
 const ticketRouter = require("./routes/ticket");
+const orderRouter = require("./routes/order");
 const app = express();
 
 app.use(cors());
@@ -41,5 +42,6 @@ app.use("/newsLetter", newsLetterRouter);
 app.use("/search", searchRouter);
 app.use("/department", departmentRouter);
 app.use("/ticket", ticketRouter);
+app.use("/order", orderRouter);
 
 module.exports = app;
