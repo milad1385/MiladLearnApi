@@ -16,6 +16,7 @@ const departmentRouter = require("./routes/department");
 const ticketRouter = require("./routes/ticket");
 const orderRouter = require("./routes/order");
 const articleRouter = require("./routes/article");
+const menuRouter = require("./routes/menu");
 const app = express();
 
 app.use(cors());
@@ -45,5 +46,6 @@ app.use("/department", departmentRouter);
 app.use("/ticket", ticketRouter);
 app.use("/order", orderRouter);
 app.use("/article", articleRouter);
+app.use("/menu", menuRouter);
 
 module.exports = app;
