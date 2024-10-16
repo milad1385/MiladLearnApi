@@ -114,3 +114,42 @@ exports.answer = async (req, res, next) => {
     next();
   }
 };
+
+exports.getUserTickets = async (req, res, next) => {
+  try {
+    const page = req.query?.page || 1;
+
+    const tickets = await TicketModel.find({ user: req.user._id })
+      .populate("user course department subDepartment", "name username title")
+      .limit(ITEM_PER_PAGE)
+      .skip(ITEM_PER_PAGE * (page - 1));
+
+    const ticketCount = await TicketModel.countDocuments({
+      user: req.user._id,
+    });
+
+    return res.json({ tickets, count: ticketCount });
+  } catch (error) {
+    next();
+  }
+};
+
+exports.getAnswer = async (req, res, next) => {
+  try {
+    const { ticketId } = req.params;
+
+    if (!isValidObjectId(ticketId)) {
+      return res.status(422).json({ message: "Please send valid id" });
+    }
+
+    const mainTicket = await TicketModel.findOne({ _id: id })
+      .populate("user course department subDepartment", "name username title")
+      .lean();
+
+    const answerTicket = await TicketModel.findOne({ parrent: ticketId });
+
+    return res.json({ mainTicket, answerTicket });
+  } catch (error) {
+    next();
+  }
+};

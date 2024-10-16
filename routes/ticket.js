@@ -15,4 +15,8 @@ router
 
 router.route("/answer").post(authMiddleware, ticketController.answer);
 
+router.route("/user").get(authMiddleware, ticketController.getUserTickets);
+
+router.route("/:id/answer").get(authMiddleware, ticketController.getAnswer);
+
 module.exports = router;
