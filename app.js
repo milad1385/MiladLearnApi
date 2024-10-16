@@ -15,6 +15,7 @@ const searchRouter = require("./routes/search");
 const departmentRouter = require("./routes/department");
 const ticketRouter = require("./routes/ticket");
 const orderRouter = require("./routes/order");
+const articleRouter = require("./routes/article");
 const app = express();
 
 app.use(cors());
@@ -43,5 +44,6 @@ app.use("/search", searchRouter);
 app.use("/department", departmentRouter);
 app.use("/ticket", ticketRouter);
 app.use("/order", orderRouter);
+app.use("/article", articleRouter);
 
 module.exports = app;
