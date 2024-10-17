@@ -24,7 +24,7 @@ exports.create = async (req, res, next) => {
 
 exports.delete = async (req, res, next) => {
   try {
-    const { id } = req.body;
+    const { id } = req.params;
 
     if (!isValidObjectId(id)) {
       return res.status(422).json({ message: "Please send valid id" });
