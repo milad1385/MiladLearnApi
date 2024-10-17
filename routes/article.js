@@ -4,7 +4,6 @@ const authMiddleware = require("../middlewares/auth");
 const isAdminMiddleware = require("../middlewares/isAdmin");
 
 const articleController = require("../controllers/article");
-const { multerStorage } = require("../middlewares/multer");
 
 const router = express.Router();
 

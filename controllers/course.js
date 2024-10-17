@@ -111,9 +111,35 @@ exports.getAllCourses = async (req, res, next) => {
     const courses = await CourseModel.find({}).populate(
       "creator category",
       "title name"
-    );
+    ).lean();
 
-    return res.json(courses);
+    const registers = await RegisterCourse.find({}).lean();
+    const comments = await CommentModel.find({}).lean();
+
+    const allCourses = [];
+
+    courses.forEach((course) => {
+      const registerUsers = registers.filter(
+        (register) => String(register.course) === String(course._id)
+      );
+
+      const courseComments = comments.filter(
+        (comment) => String(comment.course) === String(course._id)
+      );
+
+      const totalScore = courseComments.reduce(
+        (cur, comment) => cur + comment.score,
+        0
+      );
+
+      allCourses.push({
+        ...course,
+        registerCount: registerUsers.length,
+        score: Math.floor(totalScore / courseComments.length) || 5,
+      });
+    });
+
+    return res.json(allCourses);
   } catch (error) {
     next();
   }
