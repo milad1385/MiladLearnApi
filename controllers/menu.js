@@ -91,13 +91,13 @@ exports.getAllMenus = async (req, res, next) => {
 
 exports.getAll = async (req, res, next) => {
   try {
-    const menus = await MenuModel.find({}).populate("parrent", "title");
+    const menus = await MenuModel.find({}).lean();
     const mainMenus = menus.filter((menu) => !menu.parrent);
     const subMenus = menus.filter((menu) => menu.parrent);
 
     const allMenus = mainMenus.map((menu) => {
       const matchedSubMenus = subMenus.filter(
-        (sub) => String(sub._id) === String(menu._id)
+        (sub) => String(sub?.parrent) === String(menu._id)
       );
 
       return {

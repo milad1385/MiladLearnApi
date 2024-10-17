@@ -20,6 +20,9 @@ module.exports = async (req, res, next) => {
       return res.status(401).json({ message: "user is unathorized !!!" });
     }
 
+    console.log(payload);
+    
+
     const user = await UserModel.findOne({ _id: payload.id });
 
     if (!user) {
